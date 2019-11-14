@@ -29,7 +29,7 @@ font1 = pygame.font.SysFont("Liberation Serif", 24)
 font2 = pygame.font.SysFont("Liberation Serif", 20)
 font3 = pygame.font.SysFont("Arial", 20)
 font4 = pygame.font.SysFont("Times New Roman", 36)
-font5 = pygame.font.SysFont("Liberation Serif", 40)  # Points
+font5 = pygame.font.SysFont("Liberation Serif", 40) # Points
 
 # Set up sounds
 intro_sound = load_sound('intro.wav', 0.3)
@@ -41,9 +41,9 @@ game_over_sound = load_sound('game_over.wav', 1.0)
 game_lost_sound = load_sound('game_lost.wav', 1.0)
 game_won_sound = load_sound('game_won.wav', 1.0)
 
-# Seleccionamos al azar cualquiera de estos sonidos para el enemigo
+# We randomly select any of these sounds for the enemy
 lst_sound_laser = ["laser1.wav", "laser2.wav",
-                         "laser3.wav", "laser4.wav", "laser5.wav"]
+                   "laser3.wav", "laser4.wav", "laser5.wav"]
 laser_droid_sound = load_sound(
     random.choice(lst_sound_laser), 0.3)
 laser_player_sound = load_sound('laser_player.wav', 0.3)

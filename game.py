@@ -23,12 +23,11 @@ class Game(object):
         pygame.display.set_caption("Star Wars")
         self.set_fps = pygame.time.Clock()
         pygame.mouse.set_visible(False)
-        # Establecemos las imágenes
+        # We establish the images
         logo = load_image(path.join('data', 'images', 'background', 'start_logo.png'))
-
-        # Muestra la pantalla de bienvenida
+        # Displays the start screen
         self.draw_text("Press a key for start", font1,
-                            window, (WINDOW_WIDTH / 3), (WINDOW_HEIGHT / 3) + 100)
+                        window, (WINDOW_WIDTH / 3), (WINDOW_HEIGHT / 3) + 100)
         window.blit(logo, (150, 100))
         pygame.display.update()
         
@@ -51,7 +50,7 @@ class Game(object):
             points = 0
             asteroid_counter = 0
 
-            # Configuramos las cajas que contendrán texto
+            # Configure the boxes that will contain text
             points_box = TextBox("Points: {}".format(points), font1, 10, 0)
             top_score_box = TextBox("Best score: {}".format(top_score), font1, 10, 40)
             objectives_box = TextBox("Objective: {}".format(OBJECTIVE_LVL), font1, 10, 80)
@@ -67,12 +66,12 @@ class Game(object):
                 # Draw background
                 window.blit(background, (0, 0))
 
-                # En caso de que el jugador pierda no se le permite utilizar teclas
+                # In case the player loses, he is not allowed to use keys.
                 if press_keys == True:
                     for event in pygame.event.get():
                         if event.type == QUIT:
                             self.exit_game()
-                        elif event.type == KEYDOWN:  # Preguntamos si se ha presionado una tecla
+                        elif event.type == KEYDOWN: # We ask if a key has been pressed
                             if event.key == K_F1:
                                 self.show_help()
                             if event.key == K_F2:
@@ -85,11 +84,10 @@ class Game(object):
                                 laser_player_sound.play()
                                 group_laser_player.add(
                                     PlayerLaser(player.rect.midtop))
-                        elif event.type == KEYUP:  # Preguntamos si se ha dejado de presionar cualquier tecla
+                        elif event.type == KEYUP:  # We ask if you have stopped pressing any key
                             player.x_speed, player.y_speed = 0, 0
 
-                    # Sirve para mover a la nave del player por el espacio
-                    # Con las teclas de navegación y letras.
+                    # Basic controls for driving the spaceship
                     key_pressed = pygame.key.get_pressed()
                     if key_pressed[K_a] or key_pressed[K_LEFT]:
                         player.x_speed = -(RATE_PLAYER_SPEED)
@@ -99,15 +97,15 @@ class Game(object):
                         player.y_speed = -(RATE_PLAYER_SPEED)
                     if key_pressed[K_s] or key_pressed[K_DOWN]:
                         player.y_speed = RATE_PLAYER_SPEED
-                else:  # Entramos recién en el bloque luego de que la energía se agote
-                    # 6 es la cantidad de imagenes de la animación * el RETRASO + 20 ciclos más para tener un momento de pausa
+                else: # In case we run out of power.
+                    # 6 is the number of images of the animation * the DELAY + 20 more cycles to have a moment of pause
                     total_loops = (DELAY_EXPLOSION * 6) + 20
                     if loop_counter == total_loops:
-                        break  # SALIMOS DEL CICLO WHILE
+                        break
 
-                    loop_counter = loop_counter + 1  # Aumentamos el contador
+                    loop_counter = loop_counter + 1
 
-                # Pone mas asteroides en la parte alta de la pantalla, si son necesarios
+                # Put more asteroids at the top of the screen, if necessary.
                 asteroid_counter += 1
                 if asteroid_counter == ADDNEW_ASTEROID_RATE:
                     asteroid_counter = 0
@@ -116,22 +114,22 @@ class Game(object):
                 # Crear los droides enemigos
                 # Sirve para agregar droides cada vez que su valor sea mayor o igual a 500
                 # Luego se resetea. Es para no estar agregando droides de manera abusiva.
+
+                # Creating droids
+                # It is not to overload droids on the screen.
                 enemy_creation_period += 2
-                # Limitamos la cantidad maxima de droides que se crearan
                 if (len(enemy_team)) <= MAX_NUMBER_DROIDS and enemy_creation_period >= 450:
                     enemy_team.add(Enemy())
                     enemy_creation_period = 0
-                # Limitamos la cantidad maxima de droides que se crearan
                 elif (len(enemy_team)) <= MAX_NUMBER_DROIDS and enemy_creation_period == 210:
                     enemy_team.add(Enemy())
                     enemy_team.add(Enemy())
-                # Limitamos la cantidad maxima de droides que se crearan
                 elif (len(enemy_team)) <= MAX_NUMBER_DROIDS and enemy_creation_period == 50:
                     enemy_team.add(Enemy())
                     enemy_team.add(Enemy())
                     enemy_team.add(Enemy())
 
-                # Para contar el tiempo
+                # To determine the elapsed time
                 if not time.clock():
                     current_time = time.perf_counter()
                 else:
@@ -139,76 +137,72 @@ class Game(object):
                 elapsed_time = current_time - initial_time
                 elapsed_time = elapsed_time * 2
 
-                # Muerte del personaje. Controlamos que se realice 1 vez
+                # Death of the character. We control that it is carried out 1 time
                 if energy <= 0 and press_keys == True:
-                    # Verificamos si supera el mejor puntaje
                     if points > top_score:
                         top_score = points
                     explosion_player.play()
-                    press_keys = False  # Para deshabilitar el ingreso de pulsaciones
+                    press_keys = False # To disabled pulse input
                     group_explosion.add(Explosion(player.rect))
-                    player.kill()  # Matamos al personaje
+                    player.kill()
                     loop_counter = 0
-                # Gana el personaje
+                # Player wins
                 elif OBJECTIVE_LVL <= 0:
-                    # Verificamos si supera el mejor puntaje
                     if points > top_score:
                         top_score = points
-                    press_keys = False  # Para deshabilitar el ingreso de pulsaciones
+                    press_keys = False # To disabled pulse input
                     player.kill()
                     loop_counter = 0
                     break
-                
+
                 # -----------------------------------------------------------------------------------------
-                # COLISIONES DE LOS SPRITES
+                # COLLISIONS OF SPRITES
                 # =========================
-                # Daño ocasionado por los láseres de los enemigos al player
+                # Collision with enemy laser and player
                 for player in pygame.sprite.groupcollide(player_team, group_laser_enemy, False, True):
                     energy = energy - 5
-                # Para que el láser destruya la nave enemiga
+                # Collision with laser and enemy
                 for droid in pygame.sprite.groupcollide(enemy_team, group_laser_player, True, True):
                     points += 15
                     group_explosion.add(Explosion(droid.rect, "explosion"))
                     explosion_droid.play()
                     OBJECTIVE_LVL -= 1
-                # Para que el láser destruya los asteroides
+                # Collision with laser and asteroids
                 for asteroid in pygame.sprite.groupcollide(group_asteroids, group_laser_player, False, True):
                     points += 5
-                    # En vez de una explosion el asteroide desaparece en una nube de humo
                     group_explosion.add(Explosion(asteroid.rect, "smoke"))
                     explosion_asteroid.play()
-                    # Preguntamos si es un asteroide que provee energía para cambiar la imagen
-                    if (asteroid.is_energetic is True):
+                    # We ask if it's an asteroid that provides energy to change the image.
+                    if (asteroid.is_energetic):
                         asteroid.image = asteroid.select_image(
                             path.join('resources', 'energy.png'), True)
-                        asteroid.x_speed = 0  # Para que caiga verticalmente
-                        asteroid.y_speed = 2  # Para disminuir su velocidad
+                        asteroid.x_speed = 0 # To make it fall vertically
+                        asteroid.y_speed = 2 # To slow down
                         group_energy.add(asteroid)
                         group_asteroids.remove(asteroid)
-                    else:  # Destruimos directamente al asteroide
+                    else:
                         asteroid.kill()
-                # Cuando un asteroide choca a la nave
+                # Collision with asteroid and player
                 for asteroid in pygame.sprite.groupcollide(group_asteroids, player_team, True, False):
-                    energy = energy - 7  # Disminuye la energía que posee la nave
+                    energy = energy - 7 # Decreases the ship's energy
                     group_explosion.add(Explosion(asteroid.rect, "smoke"))
                     collision_asteroid.play()
-                # Cuando un droide choca a la nave
+                # Collision with enemy and player
                 for droid in pygame.sprite.groupcollide(enemy_team, player_team, True, False):
-                    energy = energy - 7  # Disminuyo la energía que posee la nave
+                    energy = energy - 7
                     group_explosion.add(Explosion(droid.rect, "explosion"))
                     explosion_droid.play()
-                # Cuando tocamos la energía
+                # Collision with energy and player
                 for e in pygame.sprite.groupcollide(group_energy, player_team, True, False):
                     if energy < 100:
-                        # Proporciona energía dependiendo del asteroide
+                        # Provides energy depending on asteroid
                         energy = energy + e.energy_lvl
-                        # Trataremos de que no pase de los límites
                         if energy >= 100:
                             energy = 100
 
                     pickup_sound.play()
-        # -----------------------------------------------------------------------------------------
-                # Actualizamos todos los grupos
+                # -----------------------------------------------------------------------------------------
+                # Update all groups
                 # =============================
                 player_team.update()
                 group_laser_player.update()
@@ -219,7 +213,8 @@ class Game(object):
                 group_box.update()
                 group_explosion.update()
 
-                # REDIBUJAMOS LOS SPRITES
+                # -----------------------------------------------------------------------------------------
+                # REDRAW SPRITES
                 # =======================
                 player_team.clear(window, background)
                 group_laser_player.clear(window, background)
@@ -238,44 +233,41 @@ class Game(object):
                 group_box.draw(window)
                 group_explosion.draw(window)
 
-                # Pone las puntuaciones y tiempos
                 points_box.texto = "Points: {}".format(points)
                 top_score_box.texto = "Best score: {}".format(top_score)
                 objectives_box.texto = "Objective: {}".format(OBJECTIVE_LVL)
-                # Para que lo muestre con 2 decimales
                 time_box.texto = "Time: %.2f" % (elapsed_time)
                 energy_box.texto = "Energy: {0}%".format(int(energy))
                 info_box.texto = "Press: ESC-Exit     F1-Help     F2-About..."
 
-                # Mostramos la barra de energía
+                # Show the energy bar
                 self.show_energy_bar(energy)
 
                 pygame.display.update()
                 self.set_fps.tick(FPS)
 
-            # Detiene el juego y muestra la pantalla de Game Over
+            # Stops the game and displays the Game Over screen
             self.draw_text('GAME OVER', font1, window, (WINDOW_WIDTH / 2) - 50, (WINDOW_HEIGHT / 3))
             pygame.display.update()
             time_lapse = 2000 # 2 sec
             pygame.time.delay(time_lapse)
             music_channel.stop()
 
-            # Imprimimos el puntaje
-            self.imprime_puntuacion(points)
+            # Print the punctuation
+            self.print_score(points)
             time_lapse = 4000 # 4 sec
             pygame.time.delay(time_lapse)
             self.wait_for_key_pressed()
             music_channel.stop()
 
     def draw_text(self, texto, fuente, surface, x, y):
-        # Objeto temporal usado sólo para obtener luego el rectángulo(text_obj.get_rect())
         text_obj = fuente.render(texto, True, TEXTCOLOR)
         text_rect = text_obj.get_rect()
         text_rect.topleft = (x, y)
         surface.blit(fuente.render(texto, True, TEXTCOLOR), text_rect)
 
     def show_energy_bar(self, energy):
-        # Dibuja una barra de energy vertical coloreada. Tonos rojos para poca energia y verdes para energias altas
+        # Draw a colored vertical energy bar. Red tones for low energy and green tones for high energy.
         red_lvl = 255 - ((energy * 2) + 55)
         if red_lvl < 0:
             red_lvl = 0
@@ -294,36 +286,35 @@ class Game(object):
 
     def show_help(self):
         img_help = load_image(path.join('data', 'images', 'background', 'help.jpg'), True, DISPLAYMODE)
-        window.blit(img_help, (0, 0))  # Imagen para el tapar el fondo
-        pygame.display.update()  # Pintamos toda la pantalla para borrar la imagen anterior
+        window.blit(img_help, (0, 0)) # Image to cover the background
+        pygame.display.update()
 
-        # Mensaje de salida
         self.draw_text('Press a key to play again',
                         font1, window, (WINDOW_WIDTH / 3), WINDOW_HEIGHT - 20)
 
         pygame.display.update()
-        # No saldremos del bucle hasta no presionar alguna tecla
+        # We won't get out of the loop until we press a key.
         self.wait_for_key_pressed()
 
     def show_about(self):
         """
-        Pausará el juego y mostrará información acerca de los desarrolladores, versi+on, etc.
+        It will pause the game and display information about developers, version, etc.
         """
-        window.blit(background, (0, 0))  # Imagen para el tapar el fondo
-        pygame.display.update()  # Pintamos toda la pantalla para borrar la imagen anterior
+        window.blit(background, (0, 0))
+        pygame.display.update()
 
-        # La imágen
-        size_image = 96  # Seleccionamos un tamaño grande
+        # Logo
+        size_image = 96
         image = load_image(path.join('data', 'images', 'spaceship', 'ship_center_motor_on.png'),
                                False, (size_image, size_image))
         window.blit(image, ((WINDOW_WIDTH / 2) - 25, (WINDOW_HEIGHT / 4)))
 
-        # El título
+        # Title
         version = "0.0.1a"
         self.draw_text("Star Wars " + version, font4,
                             window, (WINDOW_WIDTH / 2) - 100, (WINDOW_HEIGHT / 2))
 
-        # Descripción
+        # Description
         self.draw_text('Space shooter game inspired by the Star Wars movie',
                         font2, window, (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 50)
 
@@ -342,15 +333,15 @@ class Game(object):
                         (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 130)
         self.draw_text("   ■ Andrés Segovia:", font3, window,
                         (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 155)
-        # Mensaje de salida
+        
         self.draw_text('Press a key to play again',
                         font1, window, (WINDOW_WIDTH / 3) - 100, WINDOW_HEIGHT - 50)
 
         pygame.display.update()
-        # No saldremos del bucle hasta no presionar alguna tecla
+        # We won't get out of the loop until we press a key.
         self.wait_for_key_pressed()
 
-    def imprime_puntuacion(self, points):
+    def print_score(self, points):
         if OBJECTIVE_LVL <= 0:
             image = load_image(path.join('data', 'images', 'background', 'game_won.jpg'), True, DISPLAYMODE)
             sound = game_won_sound
@@ -371,9 +362,9 @@ class Game(object):
                 if event.type == QUIT:
                     self.exit_game()
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE: # Al pulsar la tecla esc salimos del juego
+                    if event.key == K_ESCAPE: # When we press the "esc" key we're out of the game
                         self.exit_game()
-                    return  # Al presionar cualquier tecla salimos y comienza el juego
+                    return  # When we press any key we leave the loop and the game continues.
 
     def pause_game(self):
         pausado = True
@@ -382,12 +373,12 @@ class Game(object):
                 if event.type == QUIT:
                     self.exit_game()
                 if event.type == KEYDOWN:
-                    if event.key == K_ESCAPE:  # Al pulsar la tecla esc salimos del juego
+                    if event.key == K_ESCAPE:
                         self.exit_game()
                     if event.key == K_p:
                         pausado = False
             self.draw_text("PAUSE", font5, window,
-                                (WINDOW_WIDTH / 2)-50, (WINDOW_HEIGHT / 2))
+                            (WINDOW_WIDTH / 2)-50, (WINDOW_HEIGHT / 2))
             pygame.display.update()
 
     def exit_game(self):
