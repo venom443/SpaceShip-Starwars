@@ -233,12 +233,13 @@ class Game(object):
                 group_box.draw(window)
                 group_explosion.draw(window)
 
-                points_box.texto = "Points: {}".format(points)
-                top_score_box.texto = "Best score: {}".format(top_score)
-                objectives_box.texto = "Objective: {}".format(OBJECTIVE_LVL)
-                time_box.texto = "Time: %.2f" % (elapsed_time)
-                energy_box.texto = "Energy: {0}%".format(int(energy))
-                info_box.texto = "Press: ESC-Exit     F1-Help     F2-About..."
+                print("\033[32mVALOOOR OBJETIVO: " + str(OBJECTIVE_LVL) + "\033[0m")
+                points_box.text = "Points: {}".format(points)
+                top_score_box.text = "Best score: {}".format(top_score)
+                objectives_box.text = "Objective: {}".format(OBJECTIVE_LVL)
+                time_box.text = "Time: %.2f" % (elapsed_time)
+                energy_box.text = "Energy: {0}%".format(int(energy))
+                info_box.text = "Press: ESC-Exit     F1-Help     F2-About..."
 
                 # Show the energy bar
                 self.show_energy_bar(energy)
