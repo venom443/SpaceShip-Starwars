@@ -41,11 +41,7 @@ class Game(object):
         top_score = 0
 
         while(True):
-            if not time.clock():
-                initial_time = time.perf_counter()
-            else:
-                initial_time = time.clock()
-
+            initial_time = time.perf_counter()
             enemy_creation_period = 2
             energy = INIT_ENERGY
             points = 0
@@ -98,7 +94,7 @@ class Game(object):
                                 group_laser_player.add(
                                     PlayerLaser(player.rect.midtop))
                         elif event.type == KEYUP:  # We ask if you have stopped pressing any key
-                            player.x_speed, player.y_speed = 0, 0
+                            player.x_speed, player.y_speed = (0, 0)
 
                     # Basic controls for driving the spaceship
                     key_pressed = pygame.key.get_pressed()
@@ -139,10 +135,7 @@ class Game(object):
                     enemy_team.add(Enemy())
 
                 # To determine the elapsed time
-                if not time.clock():
-                    current_time = time.perf_counter()
-                else:
-                    current_time = time.clock()
+                current_time = time.perf_counter()
                 elapsed_time = current_time - initial_time
                 elapsed_time = elapsed_time * 2
 
