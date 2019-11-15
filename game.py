@@ -12,7 +12,8 @@ from sprites import *
 from resources import *
 
 
-OBJECTIVE_LVL = 100  # Destroy 100 enemies
+# It will increase as we destroy droids until we reach the goal
+count_droids_destroyed = 0
 
 
 class Game(object):
@@ -36,28 +37,43 @@ class Game(object):
         music_channel.stop()
 
     def run(self):
-        global OBJECTIVE_LVL
-        global player
+        global count_droids_destroyed
         top_score = 0
 
         while(True):
             initial_time = time.perf_counter()
             enemy_creation_period = 2
             energy = INIT_ENERGY
+            count_droids_destroyed = 0 # Reset value
             points = 0
             asteroid_counter = 0
             
+            # ====================================
+            # We create the Sprites and the groups
+            # ====================================
             # We configure the player
             player = Player()
             player_team = pygame.sprite.RenderUpdates(player)
             group_laser_player = pygame.sprite.RenderUpdates()
             
+            # We configure the enemies
+            enemy_team = pygame.sprite.RenderUpdates()
+            # We add 3 enemies
+            for i in range(3):
+                enemy_team.add(Enemy())
+
+            # We configure the asteroids
+            group_asteroids = pygame.sprite.RenderUpdates()
+            group_energy = pygame.sprite.RenderUpdates()
+
+            # We create an object to simulate the explosion.
+            group_explosion = pygame.sprite.RenderUpdates()
             # Configure the boxes that will contain text
             points_box = TextBox("Points: {}".format(points), font1, 10, 0)
             top_score_box = TextBox(
                 "Best score: {}".format(top_score), font1, 10, 40)
             objectives_box = TextBox(
-                "Objective: {}".format(OBJECTIVE_LVL), font1, 10, 80)
+                "Objective: {}".format(OBJECTIVE_LVL - count_droids_destroyed), font1, 10, 80)
             time_box = TextBox("Time: {0:.2f}".format(
                 initial_time), font1, WINDOW_WIDTH - 150, 0)
             energy_box = TextBox("Energy: {}".format(
@@ -149,7 +165,7 @@ class Game(object):
                     player.kill()
                     loop_counter = 0
                 # Player wins
-                elif OBJECTIVE_LVL <= 0:
+                elif count_droids_destroyed >= OBJECTIVE_LVL:
                     if points > top_score:
                         top_score = points
                     press_keys = False  # To disabled pulse input
@@ -168,7 +184,7 @@ class Game(object):
                     points += 15
                     group_explosion.add(Explosion(droid.rect, "explosion"))
                     explosion_droid.play()
-                    OBJECTIVE_LVL -= 1
+                    count_droids_destroyed += 1
                 # Collision with laser and asteroids
                 for asteroid in pygame.sprite.groupcollide(group_asteroids, group_laser_player, False, True):
                     points += 5
@@ -237,7 +253,7 @@ class Game(object):
 
                 points_box.text = "Points: {}".format(points)
                 top_score_box.text = "Best score: {}".format(top_score)
-                objectives_box.text = "Objective: {}".format(OBJECTIVE_LVL)
+                objectives_box.text = "Objective: {}".format(OBJECTIVE_LVL - count_droids_destroyed)
                 time_box.text = "Time: %.2f" % (elapsed_time)
                 energy_box.text = "Energy: {0}%".format(int(energy))
                 info_box.text = "Press: ESC-Exit     F1-Help     F2-About..."
@@ -346,7 +362,7 @@ class Game(object):
         self.wait_for_key_pressed()
 
     def print_score(self, points):
-        if OBJECTIVE_LVL <= 0:
+        if count_droids_destroyed >= OBJECTIVE_LVL:
             image = load_image(
                 path.join('data', 'images', 'background', 'game_won.jpg'), True, DISPLAYMODE)
             sound = game_won_sound

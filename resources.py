@@ -24,6 +24,8 @@ ADDNEW_ASTEROID_RATE = 7
 RATE_PLAYER_SPEED = 6
 # Probability that determines if it's an energetic asteroid.
 PROB_ENERGETIC_ASTEROID = 0.4
+OBJECTIVE_LVL = 5  # Destroy 100 enemies
+
 
 pygame.init()
 window = pygame.display.set_mode(DISPLAYMODE)

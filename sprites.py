@@ -235,21 +235,8 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = self.lst_img_explosion[self.index]
             else:
                 self.kill()
-
-
-# ================================
-# We create the Sprites and the groups
-# ================================
-# We configure the enemies
-enemy_team = pygame.sprite.RenderUpdates()
-# We add 3 enemies
-for i in range(3):
-    enemy_team.add(Enemy())
+# ------------------------------------------------------------
+# I have to create it in this module because a class needs it.
+# ------------------------------------------------------------
 group_laser_enemy = pygame.sprite.RenderUpdates()
 
-# We configure the asteroids
-group_asteroids = pygame.sprite.RenderUpdates()
-group_energy = pygame.sprite.RenderUpdates()
-
-# We create an object to simulate the explosion.
-group_explosion = pygame.sprite.RenderUpdates()
