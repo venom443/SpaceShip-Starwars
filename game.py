@@ -50,7 +50,12 @@ class Game(object):
             energy = INIT_ENERGY
             points = 0
             asteroid_counter = 0
-
+            
+            # We configure the player
+            player = Player()
+            player_team = pygame.sprite.RenderUpdates(player)
+            group_laser_player = pygame.sprite.RenderUpdates()
+            
             # Configure the boxes that will contain text
             points_box = TextBox("Points: {}".format(points), font1, 10, 0)
             top_score_box = TextBox(

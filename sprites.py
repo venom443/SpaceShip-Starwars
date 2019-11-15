@@ -10,8 +10,6 @@ from resources import *
 # ------------------------------------------------------------------------------
 #   PLAYER sprite
 # ------------------------------------------------------------------------------
-
-
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -242,11 +240,6 @@ class Explosion(pygame.sprite.Sprite):
 # ================================
 # We create the Sprites and the groups
 # ================================
-# We configure the player
-player = Player()
-player_team = pygame.sprite.RenderUpdates(player)
-group_laser_player = pygame.sprite.RenderUpdates()
-
 # We configure the enemies
 enemy_team = pygame.sprite.RenderUpdates()
 # We add 3 enemies
