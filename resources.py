@@ -24,7 +24,7 @@ ADDNEW_ASTEROID_RATE = 7
 RATE_PLAYER_SPEED = 6
 # Probability that determines if it's an energetic asteroid.
 PROB_ENERGETIC_ASTEROID = 0.4
-OBJECTIVE_LVL = 5  # Destroy 100 enemies
+OBJECTIVE_LVL = 100 # Destroy 100 enemies
 
 
 pygame.init()
@@ -63,6 +63,6 @@ music_channel.play(intro_sound, loops=-1, maxtime=0, fade_ms=0)
 
 # Configuramos la imagen de fondo
 background = load_image(
-    path.join('data', 'images', 'background', 'background.jpg'), True, DISPLAYMODE)
+    path.join('data', 'images', 'background', 'background_1.jpg'), True, DISPLAYMODE)
 
 window.blit(background, (0, 0))
