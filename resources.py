@@ -13,15 +13,17 @@ WINDOW_HEIGHT = 650
 DISPLAYMODE = (WINDOW_WIDTH, WINDOW_HEIGHT)
 TEXTCOLOR = (255, 255, 255)
 FPS = 40
-MAX_NUMBER_DROIDS = 15 # To limit the total amount of droids that can be generated without filling the screen.
+# To limit the total amount of droids that can be generated without filling the screen.
+MAX_NUMBER_DROIDS = 15
 ASTEROID_MIN_SIZE = 10
 ASTEROID_MAX_SIZE = 40
 ASTEROID_MIN_SPEED = 1
 ASTEROID_MAX_SPEED = 8
-DELAY_EXPLOSION = 5 # To simulate a delay in the explosion animation
+DELAY_EXPLOSION = 5  # To simulate a delay in the explosion animation
 ADDNEW_ASTEROID_RATE = 7
 RATE_PLAYER_SPEED = 6
-PROB_ENERGETIC_ASTEROID = 0.4 # Probability that determines if it's an energetic asteroid.
+# Probability that determines if it's an energetic asteroid.
+PROB_ENERGETIC_ASTEROID = 0.4
 
 pygame.init()
 window = pygame.display.set_mode(DISPLAYMODE)
@@ -29,7 +31,7 @@ font1 = pygame.font.SysFont("Liberation Serif", 24)
 font2 = pygame.font.SysFont("Liberation Serif", 20)
 font3 = pygame.font.SysFont("Arial", 20)
 font4 = pygame.font.SysFont("Times New Roman", 36)
-font5 = pygame.font.SysFont("Liberation Serif", 40) # Points
+font5 = pygame.font.SysFont("Liberation Serif", 40)  # Points
 
 # Set up sounds
 intro_sound = load_sound('intro.wav', 0.3)

@@ -7,7 +7,7 @@ import pygame
 
 def load_image(path, use_transparency=False, rect_img=(0, 0)):
     width, height = rect_img
-    
+
     # Loading image
     try:
         image = pygame.image.load(path)
@@ -24,7 +24,7 @@ def load_image(path, use_transparency=False, rect_img=(0, 0)):
     # Scale the image to the specified size, if required
     if width >= 1 and height >= 1:
         image = scale_image(image, (width, height))
-    else: # There will be no changes, it will keep its original size
+    else:  # There will be no changes, it will keep its original size
         pass
 
     return image
@@ -49,5 +49,5 @@ def load_sound(filename, sound_lvl=1.0):
     except (pygame.error):
         print("Could not load the sound: ", path)
         raise (SystemExit)
-    sound.set_volume(sound_lvl) # Setting the sound volume
+    sound.set_volume(sound_lvl)  # Setting the sound volume
     return sound
