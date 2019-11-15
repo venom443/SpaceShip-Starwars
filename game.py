@@ -331,7 +331,7 @@ class Game(object):
         # Developers
         self.draw_text("Developers:", font2, window,
                         (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 130)
-        self.draw_text("   ■ Andrés Segovia:", font3, window,
+        self.draw_text("   ■ Andrés Segovia<Andy-thor>:", font3, window,
                         (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 155)
         
         self.draw_text('Press a key to play again',
