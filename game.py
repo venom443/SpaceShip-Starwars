@@ -304,13 +304,103 @@ class Game(object):
                          (WINDOW_WIDTH - 30, WINDOW_HEIGHT - 30, 20, -1 * energy))
 
     def show_help(self):
-        img_help = load_image(
-            path.join('data', 'images', 'background', 'help.jpg'), True, DISPLAYMODE)
-        window.blit(img_help, (0, 0))  # Image to cover the background
+        # Let's update the screen
+        window.blit(background, (0, 0))
         pygame.display.update()
 
-        self.draw_text('Press a key to play again',
-                       font1, window, (WINDOW_WIDTH / 3), WINDOW_HEIGHT - 20)
+        # PLAYER AND DROIDS
+        # =================
+        size_image = 50
+        # Player
+        image = load_image(path.join('data', 'images', 'spaceship', 'ship_center_motor_on.png'),
+                           False, (size_image, size_image))
+        window.blit(image, (WINDOW_WIDTH * 0.5 - 25, WINDOW_HEIGHT * 0.75))
+        # Droid
+        image = load_image(path.join('data', 'images', 'resources', 'droid.png'),
+                           False, (size_image, size_image))
+        window.blit(image, (WINDOW_WIDTH * 0.78 - 25, WINDOW_HEIGHT * 0.16))
+        # LASERS
+        # ======
+        # Player laser
+        width_laser = 3
+        height_laser = 30
+        image = load_image(path.join('data', 'images', 'resources', 'laser1.png'),
+                           False, (width_laser, height_laser))
+        window.blit(image, (WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.5))
+        # Enemy laser
+        image = load_image(path.join('data', 'images', 'resources', 'laser3.png'),
+                           False, (width_laser, height_laser))
+        window.blit(image, (WINDOW_WIDTH * 0.78, WINDOW_HEIGHT * 0.25))
+        # ASTEROIDS AND ENERGY
+        # ====================
+        # Asteroids
+        size_image = 45
+        image = load_image(path.join('data', 'images', 'resources', 'asteroid.png'),
+                           False, (size_image, size_image - 5))
+        window.blit(image, (WINDOW_WIDTH * 0.3, WINDOW_HEIGHT * 0.16))
+        # Energetic asteroid
+        image = load_image(path.join('data', 'images', 'resources', 'energetic_asteroid.png'),
+                           False, (size_image, size_image - 5))
+        window.blit(image, (WINDOW_WIDTH * 0.1, WINDOW_HEIGHT * 0.16))
+        # Energy
+        size_image = 30
+        image = load_image(path.join('data', 'images', 'resources', 'energy.png'),
+                           False, (size_image, size_image - 5))
+        window.blit(image, (WINDOW_WIDTH * 0.2, WINDOW_HEIGHT * 0.5))
+        # KEYS
+        size_image = 32
+        image = load_image(path.join('data', 'images', 'resources', 'K_w.png'),
+                           False, (size_image, size_image))
+        window.blit(image, (WINDOW_WIDTH * 0.48, WINDOW_HEIGHT * 0.66))
+        image = load_image(path.join('data', 'images', 'resources', 'K_a.png'),
+                           False, (size_image, size_image))
+        window.blit(image, (WINDOW_WIDTH * 0.4, WINDOW_HEIGHT * 0.78))
+        image = load_image(path.join('data', 'images', 'resources', 'K_s.png'),
+                           False, (size_image, size_image))
+        window.blit(image, (WINDOW_WIDTH * 0.48, WINDOW_HEIGHT * 0.87))
+        image = load_image(path.join('data', 'images', 'resources', 'K_d.png'),
+                           False, (size_image, size_image))
+        window.blit(image, (WINDOW_WIDTH * 0.57, WINDOW_HEIGHT * 0.78))
+        width_img = 128
+        height_img = 28
+        image = load_image(path.join('data', 'images', 'resources', 'K_SPACE.png'),
+                           False, (width_img, height_img))
+        window.blit(image, (WINDOW_WIDTH * 0.42, WINDOW_HEIGHT * 0.96))
+
+        # COMMENTS
+        # ========
+        # Asteroids
+        text1 = "Asteroids"
+        text2 = "Destroy them and you'll earn points."
+        text3 = "If you get hit, you lose energy."
+        self.draw_text(text1, font3, window, WINDOW_WIDTH * 0.2, WINDOW_HEIGHT * 0.06)
+        self.draw_text(text2, font2, window, WINDOW_WIDTH * 0.1, WINDOW_HEIGHT * 0.09)
+        self.draw_text(text3, font2, window, WINDOW_WIDTH * 0.1, WINDOW_HEIGHT * 0.11)
+        text1 = "Energetic asteroids release"
+        text2 = "energy. Capture them!"
+        self.draw_text(text1, font6, window, WINDOW_WIDTH * 0.02, WINDOW_HEIGHT * 0.25)
+        self.draw_text(text2, font6, window, WINDOW_WIDTH * 0.04, WINDOW_HEIGHT * 0.28)
+        
+        # Energy
+        text1 = "Energy"
+        text2 = "Recovers energy. Capture them!"
+        self.draw_text(text1, font3, window, WINDOW_WIDTH * 0.18, WINDOW_HEIGHT * 0.45)
+        self.draw_text(text2, font2, window, WINDOW_WIDTH * 0.08, WINDOW_HEIGHT * 0.55)
+
+        # Droid
+        text1 = "Droid"
+        text2 = "Destroy them and you'll earn points."
+        self.draw_text(text1, font3, window, WINDOW_WIDTH * 0.75, WINDOW_HEIGHT * 0.06)
+        self.draw_text(text2, font2, window, WINDOW_WIDTH * 0.6, WINDOW_HEIGHT * 0.09)
+        text1 = "Avoid lasers or you'll lose energy."
+        self.draw_text(text1, font6, window, WINDOW_WIDTH * 0.65, WINDOW_HEIGHT * 0.3)
+
+        # Keys
+        self.draw_text("Move up", font6, window, WINDOW_WIDTH * 0.46, WINDOW_HEIGHT * 0.63)
+        self.draw_text("Move to the left", font6, window, WINDOW_WIDTH * 0.25, WINDOW_HEIGHT * 0.795)
+        self.draw_text("Move to the right", font6, window, WINDOW_WIDTH * 0.62, WINDOW_HEIGHT * 0.795)
+        self.draw_text("Move down", font6, window, WINDOW_WIDTH * 0.45, WINDOW_HEIGHT * 0.93)
+        self.draw_text("Fire!", font6, window, WINDOW_WIDTH * 0.60, WINDOW_HEIGHT * 0.97)
 
         pygame.display.update()
         # We won't get out of the loop until we press a key.

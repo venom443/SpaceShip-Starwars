@@ -34,6 +34,7 @@ font2 = pygame.font.SysFont("Liberation Serif", 20)
 font3 = pygame.font.SysFont("Arial", 20)
 font4 = pygame.font.SysFont("Times New Roman", 36)
 font5 = pygame.font.SysFont("Liberation Serif", 40)  # Points
+font6 = pygame.font.SysFont("Sans Serif", 23)
 
 # Set up sounds
 intro_sound = load_sound('intro.wav', 0.3)
