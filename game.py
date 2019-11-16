@@ -330,7 +330,7 @@ class Game(object):
         window.blit(image, ((WINDOW_WIDTH / 2) - 25, (WINDOW_HEIGHT / 4)))
 
         # Title
-        version = "0.0.1a"
+        version = "0.0.2"
         self.draw_text("Star Wars " + version, font4,
                        window, (WINDOW_WIDTH / 2) - 100, (WINDOW_HEIGHT / 2))
 
