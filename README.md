@@ -15,7 +15,6 @@ The game ends if the player runs out of power or, at best, has reached the goal 
 
 ## Controls:
 - ***W, A, S, D and arrow keys***  Movement in their respective directions.
-direcciones.
 - ***Space key***  Shooting laser
 - ***P***  Pause and continue with the game
 - ***F1***  Help
