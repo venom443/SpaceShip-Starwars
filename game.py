@@ -279,11 +279,11 @@ class Game(object):
             self.wait_for_key_pressed()
             music_channel.stop()
 
-    def draw_text(self, texto, fuente, surface, x, y):
-        text_obj = fuente.render(texto, True, TEXTCOLOR)
+    def draw_text(self, text, font, surface, x, y):
+        text_obj = font.render(text, True, TEXTCOLOR)
         text_rect = text_obj.get_rect()
         text_rect.topleft = (x, y)
-        surface.blit(fuente.render(texto, True, TEXTCOLOR), text_rect)
+        surface.blit(font.render(text, True, TEXTCOLOR), text_rect)
 
     def show_energy_bar(self, energy):
         # Draw a colored vertical energy bar. Red tones for low energy and green tones for high energy.

@@ -146,9 +146,9 @@ class Asteroid(pygame.sprite.Sprite):
         if self.rect.left <= 0 or self.rect.right >= WINDOW_WIDTH or self.rect.bottom >= WINDOW_HEIGHT:
             self.kill()
 
-    def select_image(self, archivo, is_energia_img=False):
+    def select_image(self, archivo, is_energy_img=False):
         path_img = os.path.join('data', 'images', archivo)
-        if is_energia_img is True:  # Determine if it is to change the image to energy
+        if is_energy_img is True:  # Determine if it is to change the image to energy
             image = load_image(path_img, False, (int(
                 ASTEROID_MAX_SIZE/2), int(ASTEROID_MAX_SIZE/2)))
         else:
