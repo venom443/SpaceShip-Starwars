@@ -13,7 +13,7 @@ from resources import *
 
 
 # It will increase as we destroy droids until we reach the goal
-count_droids_destroyed = 0
+count_destroyed_droids = 0
 
 
 class Game(object):
@@ -37,14 +37,14 @@ class Game(object):
         music_channel.stop()
 
     def run(self):
-        global count_droids_destroyed
+        global count_destroyed_droids
         top_score = 0
 
         while(True):
             initial_time = time.perf_counter()
             enemy_creation_period = 2
             energy = INIT_ENERGY
-            count_droids_destroyed = 0 # Reset value
+            count_destroyed_droids = 0 # Reset value
             points = 0
             asteroid_counter = 0
             
@@ -73,7 +73,7 @@ class Game(object):
             top_score_box = TextBox(
                 "Best score: {}".format(top_score), font1, 10, 40)
             objectives_box = TextBox(
-                "Objective: {}".format(OBJECTIVE_LVL - count_droids_destroyed), font1, 10, 80)
+                "Objective: {}".format(OBJECTIVE_LVL - count_destroyed_droids), font1, 10, 80)
             time_box = TextBox("Time: {0:.2f}".format(
                 initial_time), font1, WINDOW_WIDTH - 150, 0)
             energy_box = TextBox("Energy: {}".format(
@@ -165,7 +165,7 @@ class Game(object):
                     player.kill()
                     loop_counter = 0
                 # Player wins
-                elif count_droids_destroyed >= OBJECTIVE_LVL:
+                elif count_destroyed_droids >= OBJECTIVE_LVL:
                     if points > top_score:
                         top_score = points
                     press_keys = False  # To disabled pulse input
@@ -184,7 +184,7 @@ class Game(object):
                     points += 15
                     group_explosion.add(Explosion(droid.rect, "explosion"))
                     explosion_droid.play()
-                    count_droids_destroyed += 1
+                    count_destroyed_droids += 1
                 # Collision with laser and asteroids
                 for asteroid in pygame.sprite.groupcollide(group_asteroids, group_laser_player, False, True):
                     points += 5
@@ -253,7 +253,7 @@ class Game(object):
 
                 points_box.text = "Points: {}".format(points)
                 top_score_box.text = "Best score: {}".format(top_score)
-                objectives_box.text = "Objective: {}".format(OBJECTIVE_LVL - count_droids_destroyed)
+                objectives_box.text = "Objective: {}".format(OBJECTIVE_LVL - count_destroyed_droids)
                 time_box.text = "Time: %.2f" % (elapsed_time)
                 energy_box.text = "Energy: {0}%".format(int(energy))
                 info_box.text = "Press: ESC-Exit     F1-Help     F2-About..."
@@ -264,17 +264,11 @@ class Game(object):
                 pygame.display.update()
                 self.set_fps.tick(FPS)
 
-            # Stops the game and displays the Game Over screen
-            self.draw_text('GAME OVER', font1, window,
-                           (WINDOW_WIDTH / 2) - 50, (WINDOW_HEIGHT / 3))
-            pygame.display.update()
-            time_lapse = 2000  # 2 sec
-            pygame.time.delay(time_lapse)
-            music_channel.stop()
-
-            # Print the punctuation
+            # -----------------------------------
+            # Stops the game and prints the score
+            # ===================================
             self.print_score(points)
-            time_lapse = 4000  # 4 sec
+            time_lapse = 3000  # 3 sec
             pygame.time.delay(time_lapse)
             self.wait_for_key_pressed()
             music_channel.stop()
@@ -444,29 +438,32 @@ class Game(object):
         self.draw_text("   ■ Andrés Segovia<Andy-thor>:", font3, window,
                        (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 155)
 
-        self.draw_text('Press a key to play again',
-                       font1, window, (WINDOW_WIDTH / 3) - 100, WINDOW_HEIGHT - 50)
+        self.draw_text('Press a key to play again', font3, 
+                        window, WINDOW_WIDTH * 0.38, WINDOW_HEIGHT - 50)
 
         pygame.display.update()
         # We won't get out of the loop until we press a key.
         self.wait_for_key_pressed()
 
     def print_score(self, points):
-        if count_droids_destroyed >= OBJECTIVE_LVL:
-            image = load_image(
-                path.join('data', 'images', 'background', 'game_won.jpg'), True, DISPLAYMODE)
+        if count_destroyed_droids >= OBJECTIVE_LVL:
+            msg = "You have won!"
             sound = game_won_sound
         else:
-            image = load_image(
-                path.join('data', 'images', 'background', 'game_lost.jpg'), True, DISPLAYMODE)
+            msg = "You have lost!"
             sound = game_lost_sound
-        window.blit(image, (0, 0))
-        music_channel.play(sound, loops=0, maxtime=0, fade_ms=0)
+        # Prints obtained score
+        self.draw_text(str(points), font5, window,
+                       WINDOW_WIDTH * 0.5, WINDOW_HEIGHT / 2 - 50)
+        # Prints custom message
+        self.draw_text(msg, font1, window,
+                       WINDOW_WIDTH * 0.42, WINDOW_HEIGHT / 2)
+
+        self.draw_text('Press a key to play again', font3, 
+                        window, WINDOW_WIDTH * 0.38, WINDOW_HEIGHT - 50)
 
         pygame.display.update()
-        self.draw_text(str(points), font5, window,
-                       (WINDOW_WIDTH / 2)-20, (WINDOW_HEIGHT / 2)-20)
-        pygame.display.update()
+        music_channel.play(sound, loops=0, maxtime=0, fade_ms=0)
 
     def wait_for_key_pressed(self):
         while True:
@@ -480,8 +477,8 @@ class Game(object):
                     return
 
     def pause_game(self):
-        pausado = True
-        while pausado:
+        paused = True
+        while paused:
             for event in pygame.event.get():
                 if event.type == QUIT:
                     self.exit_game()
@@ -489,7 +486,7 @@ class Game(object):
                     if event.key == K_ESCAPE:
                         self.exit_game()
                     if event.key == K_p:
-                        pausado = False
+                        paused = False
             self.draw_text("PAUSE", font5, window,
                            (WINDOW_WIDTH / 2)-50, (WINDOW_HEIGHT / 2))
             pygame.display.update()
