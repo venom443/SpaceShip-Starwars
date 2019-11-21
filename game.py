@@ -1,6 +1,22 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+# Copyright (C) 2019 Andrés Segovia
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
 from os import path
 import pygame
 import random
@@ -83,10 +99,10 @@ class Game(object):
             group_box = pygame.sprite.RenderUpdates(
                 points_box, top_score_box, objectives_box, time_box, energy_box, info_box)
 
-            music_channel.play(background_sound, loops=-
-                               1, maxtime=0, fade_ms=0)
+            music_channel.play(background_sound, loops=-1, maxtime=0, fade_ms=0)
             loop_counter = 0
             press_keys = True
+            
             while (True):
                 # Draw background
                 window.blit(background, (0, 0))
@@ -429,14 +445,14 @@ class Game(object):
             time_lapse = dev_year
         else:
             time_lapse = dev_year + " - " + current_year
-        self.draw_text("Copyright © " + time_lapse, font2,
-                       window, (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 90)
+        self.draw_text("Copyright © " + time_lapse, font2, window, 
+                       WINDOW_WIDTH / 3 - 100, WINDOW_HEIGHT / 2 + 90)
 
         # Developers
         self.draw_text("Developers:", font2, window,
-                       (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 130)
+                       WINDOW_WIDTH / 3 - 100, WINDOW_HEIGHT / 2 + 130)
         self.draw_text("   ■ Andrés Segovia<Andy-thor>:", font3, window,
-                       (WINDOW_WIDTH / 3) - 100, (WINDOW_HEIGHT / 2) + 155)
+                       WINDOW_WIDTH / 3 - 100, WINDOW_HEIGHT / 2 + 155)
 
         self.draw_text('Press a key to play again', font3, 
                         window, WINDOW_WIDTH * 0.38, WINDOW_HEIGHT - 50)
